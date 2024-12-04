@@ -1,5 +1,6 @@
 # Use the official Tomcat base image
-FROM tomcat:9.0.65-jdk17-slim
+FROM tomcat:9.0-jdk17-slim
+
 
 # Set the working directory inside the container
 WORKDIR /app
