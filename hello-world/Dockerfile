@@ -1,17 +1,16 @@
-# Use the official Tomcat base image
-FROM tomcat:9.0-jdk17
-
+# Use an official OpenJDK base image
+FROM openjdk:17-jdk-slim
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy your WAR file to the Tomcat webapps directory
-COPY /var/lib/jenkins/workspace/java/devops-java/hello-world/webapp/target/webapp.war /usr/local/tomcat/webapps/myapp.war
+# Copy the JAR file from the local machine to the container
+COPY target/myapp.jar /app/myapp.jar
 
-# Expose the port that Tomcat is listening on (default is 8080)
+# Expose the port that your app will run on (default is 8080 for many Java apps)
 EXPOSE 8080
 
-# Optionally, you can customize Tomcat's server.xml or other configurations here
-# COPY ./tomcat-config/server.xml /usr/local/tomcat/conf/server.xml
+# Command to run the application
+ENTRYPOINT ["java", "-jar", "myapp.jar"]
 
-# By default, the Tomcat image will run Tomcat, so no need to add ENTRYPOINT
+# Optional: If your app listens on a different port, replace 8080 with your app's port
