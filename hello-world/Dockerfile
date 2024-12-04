@@ -1,5 +1,5 @@
 # Use the official Tomcat base image
-FROM tomcat:9.0-jdk17-slim
+FROM tomcat:9.0-jdk17
 
 
 # Set the working directory inside the container
