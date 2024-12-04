@@ -6,7 +6,7 @@ FROM tomcat:9.0-jdk17
 WORKDIR /app
 
 # Copy your WAR file to the Tomcat webapps directory
-COPY target/myapp.war /usr/local/tomcat/webapps/myapp.war
+COPY /var/lib/jenkins/workspace/java/devops-java/hello-world/webapp/target/webapp.war /usr/local/tomcat/webapps/myapp.war
 
 # Expose the port that Tomcat is listening on (default is 8080)
 EXPOSE 8080
