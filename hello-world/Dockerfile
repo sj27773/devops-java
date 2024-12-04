@@ -1,16 +1,24 @@
-# Use an official OpenJDK base image
-FROM openjdk:17-jdk-slim
+# Stage 1: Build the application
+FROM maven:3.9.5-eclipse-temurin-17 AS builder
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the JAR file from the local machine to the container
-COPY target/myapp.jar /app/myapp.jar
+# Copy the entire project into the container
+COPY . .
 
-# Expose the port that your app will run on (default is 8080 for many Java apps)
+# Build the project
+RUN mvn clean package -DskipTests
+
+# Stage 2: Create the runtime image
+FROM tomcat:10.1-jdk17
+
+WORKDIR /usr/local/tomcat/webapps/
+
+# Copy the built WAR file from the builder stage
+COPY --from=builder /app/target/*.war ./petclinic.war
+
+# Expose the Tomcat port
 EXPOSE 8080
 
-# Command to run the application
-ENTRYPOINT ["java", "-jar", "myapp.jar"]
-
-# Optional: If your app listens on a different port, replace 8080 with your app's port
+# Start Tomcat
+CMD ["catalina.sh", "run"]
